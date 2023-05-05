@@ -1,46 +1,37 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import CreateProducts from  "./Component/form"
-import PersonPool from "./Component/person";
+import FormPage from  "./Component/FormPage"
+import PersonPool from "./Component/PersonPool";
+import MainPage from  "./Component/MainPage"
 import { Routes, Route, Link } from "react-router-dom";
 import { Button } from "reactstrap";
 
 import './App.css';
+import { useState } from "react";
 
 function App() {
 
-  const [persons,setPersons] = useState([]);
-
-  let list = () => {axios
-      .post('https://reqres.in/api/users')
-      .then((res)=>{
-        setPersons(...res.data)})
-      }
- 
+  const [members,setMembers] = useState([]);
+  
+  const getData = (data) => {
+    setMembers([...members,data])
+    console.log('appjs',members)
+  }
  
  return(
-<div className="">
-<h1> Anasayfa </h1>
-<Link to="/">
-  <Button>Main Page</Button>
-</Link>
-
-<div className="button-style">
-        <Link to="/person"><Button> New Person</Button></Link>
-        <Link to="/personpool"><Button> Person Pool</Button></Link>
-</div> 
-
-
-<Routes>
-    <Route path = "/"/>   
-    <Route path = "/person" element={<CreateProducts list={list}/>}/>
-    <Route path = "/personpool" element={<PersonPool persons={persons}/>}/>
-
-</Routes>
- 
-
+<div className="">     
+    <div className="button-style">
+            <Link to="/"><Button>Main Page</Button></Link> <br/>
+            <Link to="/person"><Button> New Person</Button></Link>
+            <Link to="/personpool"><Button> Person List</Button></Link> 
+    </div> 
+    <Routes>
+            <Route path = "/person" element={<FormPage onSubmit={getData}/>}/>
+            <Route path = "/personpool" element={<PersonPool members={members}/>}/>
+            <Route exact path = "/" element={<MainPage/>}/>  
+    </Routes> 
+    
 </div>
  ) 
 }
+
 
 export default App;
