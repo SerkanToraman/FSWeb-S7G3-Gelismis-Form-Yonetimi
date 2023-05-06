@@ -1,24 +1,54 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, FormGroup, Input, Label, Button } from "reactstrap";
 //import { useNavigate } from "react-router-dom";
-import * as Yup from "yup";
+import * as yup from 'yup';
+
+  let userSchema = yup.object({
+    name: yup.string().required('Isim gerekli').min(3,'Minimum 3 karakter olmali'),
+    email: yup.string().email('Geçerli bir e-mail gerekli').required(),
+    password: yup.string().required("Şifre gerekli").min(8,'Minimum 8 karakter olmali'),
+    terms: yup.boolean().oneOf([true], "Onay gerekli"),
+  });
+
+  
 
 function FormPage (props){
   const [person, setPerson]= useState({
     name : "",
     email : "",
     password : "",
-    TermsofService  : "",
+    terms:false,
   }) 
 
   const empty= {
     name : "",
     email : "",
     password : "",
-    TermsofService  : "",
+    terms:false,
   }
- //const nav = useNavigate();
+  const [errors,setErrors] = useState({});
+  const [isFormValid,setIsFormValid] = useState(false);
+   //const nav = useNavigate();
+
+  function validateForm(formData,formName){
+    yup.reach(userSchema, formName).validate(formData)
+      .then((result)=>{
+        setErrors({...errors,[formName]:""});
+      }).catch((err)=>{
+        setErrors({...errors,[formName]:err.errors[0]});
+
+      })
+  }
+
+  useEffect(()=>{
+    userSchema
+      .isValid(person)
+      .then((valid)=>{
+        setIsFormValid(valid)
+      })
+  },[errors])
+
 
  function changeHandler(e) {
   const {name,value,type,checked} = e.target;
@@ -29,6 +59,7 @@ function FormPage (props){
     [name]:readInputValue
   };
   setPerson(newFormData);
+  validateForm(readInputValue,name);
 }
 
 
@@ -58,8 +89,10 @@ function FormPage (props){
             onChange={(e) => {
               changeHandler(e);
             }}
-            value={person.name}
-          />
+            value={person.name}  
+            invalid={!!errors.name}
+            />
+            {errors.name ? <p>{errors.name}</p> : null}
         </FormGroup>
         <FormGroup>
         <Label htmlFor="person-email">E-mail</Label>
@@ -71,7 +104,9 @@ function FormPage (props){
               changeHandler(e);
             }}
             value={person.email}
-          />
+            invalid={!!errors.email}
+            />
+            {errors.email ? <p>{errors.email}</p> : null}
         </FormGroup>
         <FormGroup>
         <Label htmlFor="person-password">Password</Label>
@@ -83,7 +118,9 @@ function FormPage (props){
               changeHandler(e);
             }}
             value={person.password}
+            invalid={!!errors.password}
           />
+          {errors.password ? <p>{errors.password}</p> : null}
         </FormGroup>
         <FormGroup>
         <Label htmlFor="person-terms">Terms</Label>
@@ -95,14 +132,14 @@ function FormPage (props){
               changeHandler(e);
             }}
             value={person.terms}
+            invalid={!!errors.terms}
           />
+          {errors.terms ? <p>{errors.terms}</p> : null}
         </FormGroup>
-        <Button type="submit">Save</Button>
+        <Button type="submit" disabled= {!isFormValid}>Save</Button>
         <Button type="button" onClick={(e)=> setPerson(empty)}>Sıfırla</Button>
       </Form> 
     </div>
   );
-
 } 
-
 export default FormPage;
