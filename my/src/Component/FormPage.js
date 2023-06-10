@@ -14,12 +14,6 @@ import * as yup from 'yup';
   
 
 function FormPage (props){
-  const [person, setPerson]= useState({
-    name : "",
-    email : "",
-    password : "",
-    terms:false,
-  }) 
 
   const empty= {
     name : "",
@@ -27,39 +21,61 @@ function FormPage (props){
     password : "",
     terms:false,
   }
-  const [errors,setErrors] = useState({});
+
+  const [person, setPerson]= useState({
+    name : "",
+    email : "",
+    password : "",
+    terms:false,
+  }) 
+
+  
+  const [errors,setErrors] = useState({
+    name : "",
+    email : "",
+    password : "",
+    terms:"",
+  });
   const [isFormValid,setIsFormValid] = useState(false);
    //const nav = useNavigate();
 
-  function validateForm(formData,formName){
-    yup.reach(userSchema, formName).validate(formData)
-      .then((result)=>{
-        setErrors({...errors,[formName]:""});
-      }).catch((err)=>{
-        setErrors({...errors,[formName]:err.errors[0]});
 
-      })
-  }
-
-  useEffect(()=>{
+   useEffect(()=>{
     userSchema
       .isValid(person)
       .then((valid)=>{
         setIsFormValid(valid)
       })
-  },[errors])
+  },[person])
+
+  function validateForm(formName,formData){
+    yup.reach(userSchema, formName).validate(formData)
+    .then(()=>{
+      setErrors({...errors,[formName]:""});
+    }).catch((err)=>{
+      setErrors({...errors,[formName]:err.errors[0]});
+    })
+  }
+
+
+  useEffect(()=>{console.log("data>",person)},
+  [person])
 
 
  function changeHandler(e) {
   const {name,value,type,checked} = e.target;
   let readInputValue = type === 'checkbox' ?  checked: value;
-  
   const newFormData = {
     ...person,
     [name]:readInputValue
   };
   setPerson(newFormData);
-  validateForm(readInputValue,name);
+
+  validateForm(name,readInputValue)
+  console.log("person",person)
+  console.log("readInputValue",readInputValue)
+  console.log("name",name)
+  //console.log("validateForm",validateForm(name,readInputValue))
 }
 
 
@@ -131,7 +147,7 @@ function FormPage (props){
             onChange={(e) => {
               changeHandler(e);
             }}
-            value={person.terms}
+            checked={person.terms}
             invalid={!!errors.terms}
           />
           {errors.terms ? <p>{errors.terms}</p> : null}
