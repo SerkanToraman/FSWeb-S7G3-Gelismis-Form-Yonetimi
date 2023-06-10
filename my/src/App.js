@@ -20,7 +20,7 @@ function App() {
 <div className="">     
     <div className="button-style">
             <Link to="/"><Button>Main Page</Button></Link> <br/>
-            <Link to="/person"><Button> New Person</Button></Link>
+            <Link to="/person"><Button data-cy="newPersonBtn"> New Person</Button></Link>
             <Link to="/personpool"><Button> Person List</Button></Link> 
     </div> 
     <Routes>

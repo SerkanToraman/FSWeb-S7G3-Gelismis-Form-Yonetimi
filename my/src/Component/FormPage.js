@@ -75,7 +75,7 @@ function FormPage (props){
   console.log("person",person)
   console.log("readInputValue",readInputValue)
   console.log("name",name)
-  //console.log("validateForm",validateForm(name,readInputValue))
+ 
 }
 
 
