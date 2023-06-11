@@ -57,6 +57,16 @@ it('If entered  passingname and then deleted- name error shown and name error te
   cy.get('[data-cy="newPersonSaveName"]').type(passinName).clear()
    cy.get('[data-cy="Error"]').should("have.length",1).should("contain",'Isim gerekli')
 })
+it('when all tha form data entered and button clicked - new person added to list', () =>{
+  cy.get('[data-cy="newPersonSaveName"]').type(passinName)
+  cy.get('[data-cy="newPersonSaveEmail"]').type(passingEmail)
+  cy.get('[data-cy="newPersonSavePassword"]').type(passingPassword)
+  cy.get('[data-cy="newPersonSaveTerms"]').check()
+  cy.get('[data-cy="newPersonSaveBtn"]').click()
+  cy.get('[data-cy="personListBtn"]').click()
+  cy.get('[data-cy="personCard"]').should("have.length",1)
+})
+
 })
 
 

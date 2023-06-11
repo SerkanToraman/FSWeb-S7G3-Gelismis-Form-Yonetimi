@@ -12,7 +12,7 @@ console.log('length',personList.length)
 
 return(
 personList.length>0 &&(<div>{personList.map((p,i)=>{
-  return <div key={i}>
+  return <div data-cy="personCard" key={i}>
     <p>name: {p.name}</p>
     <p>E-mail: {p.email}</p>
     <p>Password: {p.password}</p>

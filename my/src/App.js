@@ -21,7 +21,7 @@ function App() {
     <div className="button-style">
             <Link to="/"><Button>Main Page</Button></Link> <br/>
             <Link to="/person"><Button data-cy="newPersonBtn"> New Person</Button></Link>
-            <Link to="/personpool"><Button> Person List</Button></Link> 
+            <Link to="/personpool"><Button data-cy="personListBtn"> Person List</Button></Link> 
     </div> 
     <Routes>
             <Route path = "/person" element={<FormPage onSubmit={getData}/>}/>
