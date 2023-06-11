@@ -107,8 +107,9 @@ function FormPage (props){
             }}
             value={person.name}  
             invalid={!!errors.name}
+            data-cy="newPersonSaveName"
             />
-            {errors.name ? <p>{errors.name}</p> : null}
+            {errors.name ? <p data-cy="Error">{errors.name}</p> : null}
         </FormGroup>
         <FormGroup>
         <Label htmlFor="person-email">E-mail</Label>
@@ -121,8 +122,9 @@ function FormPage (props){
             }}
             value={person.email}
             invalid={!!errors.email}
+            data-cy="newPersonSaveEmail"
             />
-            {errors.email ? <p>{errors.email}</p> : null}
+            {errors.email ? <p data-cy="Error">{errors.email}</p> : null}
         </FormGroup>
         <FormGroup>
         <Label htmlFor="person-password">Password</Label>
@@ -135,8 +137,9 @@ function FormPage (props){
             }}
             value={person.password}
             invalid={!!errors.password}
+            data-cy="newPersonSavePassword"
           />
-          {errors.password ? <p>{errors.password}</p> : null}
+          {errors.password ? <p data-cy="Error">{errors.password}</p> : null}
         </FormGroup>
         <FormGroup>
         <Label htmlFor="person-terms">Terms</Label>
@@ -149,10 +152,12 @@ function FormPage (props){
             }}
             checked={person.terms}
             invalid={!!errors.terms}
+            data-cy="newPersonSaveTerms"
           />
-          {errors.terms ? <p>{errors.terms}</p> : null}
+          {errors.terms ? <p data-cy="Error">{errors.terms}</p> : null}
         </FormGroup>
-        <Button type="submit" disabled= {!isFormValid}>Save</Button>
+        <Button type="submit" disabled= {!isFormValid}
+        data-cy="newPersonSaveBtn">Save</Button>
         <Button type="button" onClick={(e)=> setPerson(empty)}>Sıfırla</Button>
       </Form> 
     </div>
